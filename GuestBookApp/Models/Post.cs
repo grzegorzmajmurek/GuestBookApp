@@ -17,6 +17,7 @@ namespace GuestBookApp.Models
         [Required(ErrorMessage = "Please write a Comment")]
         [MaxLength(50)]
         public string Comment { get; set; }
+        public string Email { get; set; }
         public DateTime ReleaseDate { get; set; }
 
         public Post()

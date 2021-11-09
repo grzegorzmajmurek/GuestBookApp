@@ -41,6 +41,7 @@ namespace GuestBookApp.Repositories
             if (result != null)
             {
                 result.Name = post.Name;
+                result.Email = post.Email;
                 result.Comment = post.Comment;
                 _context.SaveChanges();
             }
