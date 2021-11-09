@@ -18,5 +18,10 @@ namespace GuestBookApp.Models
         [MaxLength(50)]
         public string Comment { get; set; }
         public DateTime ReleaseDate { get; set; }
+
+        public Post()
+        {
+            ReleaseDate = DateTime.Now;
+        }
     }
 }
