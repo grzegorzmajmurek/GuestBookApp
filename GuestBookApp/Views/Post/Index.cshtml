@@ -19,7 +19,7 @@
                 @Html.DisplayNameFor(model => model.Comment)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ReleaseDate)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["Date"]">@Html.DisplayNameFor(model => model.ReleaseDate)</a>
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Email)

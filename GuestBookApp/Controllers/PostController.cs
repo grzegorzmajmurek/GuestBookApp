@@ -18,9 +18,21 @@ namespace GuestBookApp.Controllers
             _postRepository = postRepository;
         }
         //GET: PostController
-        public ActionResult Index()
+        public ActionResult Index(String sortOrder)
         {
-            return View(_postRepository.GetAllPosts());
+            var posts = _postRepository.GetAllPosts();
+            ViewData["Date"] = String.IsNullOrEmpty(sortOrder) ? "date_desc" : "";
+            switch (sortOrder)
+            {
+                case "date_desc":
+                    posts = posts.AsEnumerable().OrderBy(x => x.ReleaseDate).ToList();
+                    break;
+                default:
+                    posts = posts.AsEnumerable().OrderByDescending(a => a.ReleaseDate).ToList();
+                    break;
+
+            }
+            return View(posts);
         }
 
         // GET: PostController/Details/5
