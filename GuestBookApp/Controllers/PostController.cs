@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using GuestBookApp.Models;
 using GuestBookApp.Repositories;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GuestBookApp.Controllers
@@ -18,9 +16,9 @@ namespace GuestBookApp.Controllers
             _postRepository = postRepository;
         }
         //GET: PostController
-        public ActionResult Index(String sortOrder)
+        public ActionResult Index(String sortOrder, int pg=1)
         {
-            var posts = _postRepository.GetAllPosts();
+            List<Post> posts = _postRepository.GetAllPosts().ToList();
             ViewData["Date"] = String.IsNullOrEmpty(sortOrder) ? "date_desc" : "";
             switch (sortOrder)
             {
@@ -30,9 +28,18 @@ namespace GuestBookApp.Controllers
                 default:
                     posts = posts.AsEnumerable().OrderByDescending(a => a.ReleaseDate).ToList();
                     break;
-
             }
-            return View(posts);
+            const int pageSize = 4;
+            if (pg < 1)
+                pg = 1;
+
+            int recsCount = posts.Count();
+            var pager = new Pager(recsCount, pg, pageSize);
+            int recSkip = (pg - 1) * pageSize;
+            var data = posts.Skip(recSkip).Take(pager.PageSize).ToList();
+            this.ViewBag.Pager = pager;
+
+            return View(data);
         }
 
         // GET: PostController/Details/5
